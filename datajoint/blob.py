@@ -432,7 +432,11 @@ class Blob:
         return data
 
     def read_value(self, dtype='uint64', count=1):
-        data = np.frombuffer(self._blob, dtype=dtype, count=count, offset=self._pos)
+        try:
+            data = np.frombuffer(self._blob, dtype=dtype, count=count, offset=self._pos)
+        except:
+            data = np.frombuffer(self._blob, dtype='uint32', count=self.read_value('uint32'), offset=self._pos)
+        # data = np.frombuffer(self._blob, dtype=dtype, count=count, offset=self._pos)
         self._pos += data.dtype.itemsize * data.size
         return data[0] if count == 1 else data
 

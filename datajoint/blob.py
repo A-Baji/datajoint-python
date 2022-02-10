@@ -68,6 +68,7 @@ class Blob:
         self._squeeze = squeeze
         self._blob = None
         self._pos = 0
+        self._pos_prev = 0
         self.protocol = None
 
     def set_dj0(self):
@@ -435,8 +436,11 @@ class Blob:
         try:
             data = np.frombuffer(self._blob, dtype=dtype, count=count, offset=self._pos)
         except:
+
+            self._pos = self._pos_prev
             data = np.frombuffer(self._blob, dtype='uint32', count=self.read_value('uint32'), offset=self._pos)
         # data = np.frombuffer(self._blob, dtype=dtype, count=count, offset=self._pos)
+        self._pos_prev = self._pos
         self._pos += data.dtype.itemsize * data.size
         return data[0] if count == 1 else data
 

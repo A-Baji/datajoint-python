@@ -108,7 +108,10 @@ def test_issue558_part2():
 
 
 def test_left_join_len():
+    Topic().add("jeff")
     Item.populate()
+    Topic().add("jeff2")
+    Topic().add("jeff3")
     q = Topic.join(
         Item - dict(topic_id=uuid.uuid5(top_level_namespace_id, "jeff")), left=True
     )
@@ -118,8 +121,8 @@ def test_left_join_len():
 
 def test_union_join():
     # https://github.com/datajoint/datajoint-python/issues/930
-    A.insert(zip([100, 200, 300, 400, 500, 600]), skip_duplicates=True)
-    B.insert([(100, 11), (200, 22), (300, 33), (400, 44)], skip_duplicates=True)
+    A.insert(zip([100, 200, 300, 400, 500, 600]))
+    B.insert([(100, 11), (200, 22), (300, 33), (400, 44)])
     q1 = B & "id < 300"
     q2 = B & "id > 300"
 
